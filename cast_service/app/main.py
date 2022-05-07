@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.movies import movies
+from app.api.casts import casts
 from app.api.db import metadata
 from app.api.db import database
 from app.api.db import engine
@@ -19,4 +19,4 @@ async def shutdown():
     await database.disconnect()
 
 
-app.include_router(movies, prefix="/api/v1/movies", tags=["movies"])
+app.include_router(casts, prefix="/api/v1/casts", tags=["casts"])
