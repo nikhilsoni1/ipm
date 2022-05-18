@@ -14,8 +14,8 @@ column_name_map = [
     ("Districtname", "districtname"),
     ("statename", "statename"),
     ("Telephone", "telephone"),
-    ("Related Suboffice", "related suboffice"),
-    ("Related Headoffice", "related headoffice"),
+    ("Related Suboffice", "relatedsuboffice"),
+    ("Related Headoffice", "relatedheadoffice"),
     ("longitude", "longitude"),
     ("latitude", "latitude"),
 ]
@@ -44,11 +44,18 @@ dupes = df.duplicated(
     ],
     keep=False,
 )
+# These columns are part of compound PK but can have null values.
+# Hence, replace null values with NA to obey SQL rules of PK != NULL
+null_pk_columns = {"Taluk": "-NA-", "Districtname": "-NA-", "Telephone": "-NA-"}
 df_dupes = df[dupes].reset_index(drop=True)
 df_dupes = df_dupes.rename(columns=column_name_map_dict)
 df_prime = df.copy()
+df_prime = df_prime.fillna(null_pk_columns)
 df_prime = df_prime.rename(columns=column_name_map_dict)
 if df_dupes.shape[0] > 0:
     df_dupes.to_csv("data/indian_pincodes_dupes.csv", index=False)
 df_prime.to_csv("data/indian_pincodes_proc.csv", index=False)
-print(df.info())
+
+# print(df_prime.isna().sum())
+
+# print(df_prime.loc[df["Taluk"].isna(), "taluk"])
