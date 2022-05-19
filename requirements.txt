@@ -57,6 +57,8 @@ idna==3.3
     #   email-validator
     #   requests
     #   rfc3986
+inflect==5.6.0
+    # via sqlacodegen
 itsdangerous==2.1.2
     # via fastapi
 jinja2==3.1.2
@@ -114,10 +116,13 @@ sniffio==1.2.0
     #   anyio
     #   httpcore
     #   httpx
+sqlacodegen[citext]==2.3.0
+    # via -r requirements.in
 sqlalchemy==1.4.36
     # via
     #   alembic
     #   databases
+    #   sqlacodegen
 starlette==0.18.0
     # via fastapi
 tomli==2.0.1
