@@ -1,4 +1,3 @@
-# coding: utf-8
 from sqlalchemy import ARRAY
 from sqlalchemy import Column
 from sqlalchemy import Float
@@ -6,9 +5,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
-metadata = Base.metadata
+from .database import Base
 
 
 class Pincode(Base):
