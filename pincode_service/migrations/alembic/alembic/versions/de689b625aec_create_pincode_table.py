@@ -1,8 +1,8 @@
-"""create pincode table
+"""Create pincode table
 
-Revision ID: 2fc50c1510fc
+Revision ID: de689b625aec
 Revises: 
-Create Date: 2022-05-18 10:11:17.317949
+Create Date: 2022-05-19 12:38:30.080046
 
 """
 from alembic import op
