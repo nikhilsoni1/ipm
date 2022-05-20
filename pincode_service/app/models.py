@@ -5,7 +5,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
-from .database import Base
+from database import Base
 
 
 class Pincode(Base):
