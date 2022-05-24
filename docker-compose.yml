@@ -1,21 +1,24 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        DATABASE_URI: postgresql://postgres:postgres@database/postgres
+        # DATABASE_URI: postgresql://postgres:postgres@192.168.1.252/postgres
+        CSV_EXPORT_URI: https://drive.google.com/u/0/uc?id=1M58ZSEBqmLnH0rRCEN5uZfj0FemN6pw3&export=download
     command: uvicorn main:app --host 0.0.0.0 --port 3000
-    working_dir: /app/app/migrations/alembic
+    working_dir: /app/app/
     ports:
       - 3000:3000
-    environment:
-      - DATABASE_URI=postgresql://postgres:postgres@192.168.1.252/postgres
-      - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1
     depends_on:
-      - alembic
+      - database
+  database:
+    image: postgres:14.3
     volumes:
-      - ./docker-bind-mount/ipm-seed-data/:/app/migrations/seed_data/
-  alembic:
-    build: .
-    working_dir: /app/app/migrations/alembic
-    command: alembic upgrade head
+      - ./bind-mount/PostgreSQL/:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
     environment:
-      - DATABASE_URI=postgresql://postgres:postgres@192.168.1.252/postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres

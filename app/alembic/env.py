@@ -24,7 +24,6 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 DATABASE_URI = os.getenv("DATABASE_URI")
-print(DATABASE_URI)
 config.set_main_option("sqlalchemy.url", DATABASE_URI)
 
 
