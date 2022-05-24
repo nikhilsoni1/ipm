@@ -1,14 +1,21 @@
 services:
   app:
     build: .
-    image: india_pincode_service
     command: uvicorn main:app --host 0.0.0.0 --port 3000
-    working_dir: /app/app/
+    working_dir: /app/app/migrations/alembic
     ports:
       - 3000:3000
     environment:
-      - DATABASE_URI=postgresql://postgres:postgres@database/postgres
+      - DATABASE_URI=postgresql://postgres:postgres@192.168.1.252/postgres
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
-    extra_hosts:
-      - "database:192.168.1.252"
+    depends_on:
+      - alembic
+    volumes:
+      - ./docker-bind-mount/ipm-seed-data/:/app/migrations/seed_data/
+  alembic:
+    build: .
+    working_dir: /app/app/migrations/alembic
+    command: alembic upgrade head
+    environment:
+      - DATABASE_URI=postgresql://postgres:postgres@192.168.1.252/postgres
