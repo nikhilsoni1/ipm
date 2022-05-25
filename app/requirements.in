@@ -1,6 +1,2 @@
-black==22.3.0
-requests==2.27.1
 fastapi[all]
-pip-tools
-databases[postgresql]==0.5.5
-psycopg2-binary
+databases[postgresql]

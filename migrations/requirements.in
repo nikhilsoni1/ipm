@@ -1,4 +1,4 @@
 alembic
 pandas
-pip-tools
-sqlacodegen[citext]
+requests
+psycopg2-binary
