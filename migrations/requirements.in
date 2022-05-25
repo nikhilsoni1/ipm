@@ -1,0 +1,4 @@
+alembic
+pandas
+requests
+psycopg2-binary

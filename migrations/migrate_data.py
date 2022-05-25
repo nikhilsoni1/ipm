@@ -1,7 +1,12 @@
 import pandas as pd
 import os
 import requests
+from sqlalchemy import create_engine
+from io import BytesIO
 
+
+DATABASE_URI = os.getenv("DATABASE_URI")
+engine = create_engine(DATABASE_URI)
 column_name_map = [
     ("officename", "officename"),
     ("pincode", "pincode"),
@@ -19,22 +24,12 @@ column_name_map = [
     ("longitude", "longitude"),
     ("latitude", "latitude"),
 ]
-root = os.path.dirname(os.path.realpath(__file__))
-os.chdir(root)
-raw_data_csv_path = "indian_pincodes_raw.csv"
-dupes_data_csv_path = "indian_pincodes_dupes.csv"
-proc_data_csv_path = "indian_pincodes_proc.csv"
-csv_export_link = "https://drive.google.com/u/0/uc?id=1M58ZSEBqmLnH0rRCEN5uZfj0FemN6pw3&export=download"
-
+csv_export_link = os.getenv("CSV_EXPORT_URI")
 csv_response = requests.get(csv_export_link)
 csv_response.raise_for_status()
-
-with open(raw_data_csv_path, "wb") as stream:
-    stream.write(csv_response.content)
 column_name_map_dict = dict(column_name_map)
-df = pd.read_csv(raw_data_csv_path)
+df = pd.read_csv(BytesIO(csv_response.content))
 df = df.sort_values(by=["pincode"]).reset_index(drop=True)
-
 dupes = df.duplicated(
     subset=[
         "officename",
@@ -54,6 +49,4 @@ df_dupes = df_dupes.rename(columns=column_name_map_dict)
 df_prime = df.copy()
 df_prime = df_prime.fillna(null_pk_columns)
 df_prime = df_prime.rename(columns=column_name_map_dict)
-if df_dupes.shape[0] > 0:
-    df_dupes.to_csv(dupes_data_csv_path, index=False)
-df_prime.to_csv(proc_data_csv_path, index=False)
+df_prime.to_sql("pincode", con=engine, if_exists="append", index=False)

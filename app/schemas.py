@@ -23,5 +23,6 @@ class Pincode(BaseModel):
     class Config:
         orm_mode = True
 
+
 class GetPincode(Pincode):
     pincodes: List[Pincode]

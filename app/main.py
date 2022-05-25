@@ -12,12 +12,14 @@ from database import engine
 title = "API for Indian Pincodes"
 app = FastAPI(title=title)
 
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
 
 @app.get(path="/{pincode}", response_model=schemas.Pincode)
 def get_pincode(pincode: int, db: Session = Depends(get_db)):
