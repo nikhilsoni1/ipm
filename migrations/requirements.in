@@ -1,0 +1,4 @@
+alembic
+pandas
+pip-tools
+sqlacodegen[citext]
